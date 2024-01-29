@@ -1,33 +1,24 @@
-import React, { useEffect } from 'react'; 
-
+import React, { useEffect } from "react";
+import axios from "axios";
 function App() {
   useEffect(() => {
-    const handleMessage = (event) => {
-      if (event.origin === "http://localhost:3001") {
-        console.log("Raw data received:", event.data);
-        try {
-          const mfe2LocalStorageValue = JSON.parse(JSON.parse(event.data));
-          console.log("Value from mfe2 localStorage:", mfe2LocalStorageValue);
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-        }
-      }
-    };
-  
-    window.addEventListener('message', handleMessage);
-  
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
+    // Fetch data from backend server
+    axios
+      .get("http://localhost:3001/api/data")
+      .then((response) => {
+        console.log("Data from Project-1:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
-  
 
   return (
     <div>
       im from the mfe1
       <iframe
         src="http://localhost:3001/"
-        style={{ width: '100%', border: 'none' }}
+        style={{ width: "100%", border: "none" }}
       />
     </div>
   );
