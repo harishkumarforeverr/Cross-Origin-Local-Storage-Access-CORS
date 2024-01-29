@@ -1,20 +1,18 @@
-import "./App.css";
+import React, { useEffect } from 'react';
 
 function App() {
-  localStorage.setItem(
-    "mfe2",
-    JSON.stringify({
-      name: "mfe2",
-      port: "http://localhost:3001/",
-      postMessage: "im from the mfe second",
-    })
-  );
+  useEffect(() => {
+    const parentWindow = window.parent;
 
-  // Send a message to the parent window (mfe1) with the localStorage value
-  window.parent.postMessage(
-    JSON.stringify(localStorage.getItem("mfe2")),
-    "http://localhost:3000/"
-  );
+    parentWindow.postMessage(
+      JSON.stringify(localStorage.getItem("mfe2")),
+      "http://localhost:3000/"
+    );
+
+    return () => {
+      // Cleanup logic if needed
+    };
+  }, []);
 
   return <div>welcome to mfe2</div>;
 }
